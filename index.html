@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TASKY - Gestor de Tareas Escolares</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Encabezado Estilo Jóvenes Constructores -->
+    <header class="main-header">
+      <div class="logo-area">
+        <div class="logo-icon">📋</div>
+        <div>
+          <h1>TASKY</h1>
+          <p class="subtitle">¡Organiza tus tareas y trabajos a tiempo!</p>
+        </div>
+      </div>
+      <div class="header-badge">
+        <span>Liceo Pedagógico</span>
+      </div>
+    </header>
+
+    <!-- Área de Alertas/Notificaciones -->
+    <div id="alert-box" class="alert-box hidden"></div>
+
+    <!-- Panel Principal Dividido en Columnas (Formulario, Detalles, Tabla) -->
+    <main class="grid-container">
+      
+      <!-- Columna 1: Formulario de Registro / Edición -->
+      <section class="card shadow-sm">
+        <div class="card-header bg-primary">
+          <span class="icon">✏️</span>
+          <h2 id="form-title">Agregar Tarea</h2>
+        </div>
+        <div class="card-body">
+          <form id="task-form" onsubmit="handleTaskSubmit(event)">
+            <input type="hidden" id="edit-id" value="">
+            
+            <div class="form-group">
+              <label for="task-name">Nombre de la tarea:</label>
+              <input type="text" id="task-name" placeholder="Ej. Taller de Matemáticas" required>
+            </div>
+
+            <div class="form-group">
+              <label for="due-date">Fecha de entrega:</label>
+              <input type="date" id="due-date" required>
+            </div>
+
+            <div class="form-group">
+              <label for="task-status">Estado:</label>
+              <select id="task-status">
+                <option value="Pendiente">Pendiente</option>
+                <option value="Completada">Completada</option>
+              </select>
+            </div>
+
+            <div class="button-stack">
+              <button type="submit" id="btn-save" class="btn btn-save">💾 Guardar Tarea</button>
+              <button type="button" id="btn-cancel-edit" class="btn btn-clear hidden" onclick="resetForm()">❌ Cancelar Edición</button>
+              <button type="button" class="btn btn-clear" onclick="resetForm()">🧹 Limpiar Formulario</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- Columna 2: Resumen / Tarjeta Informativa -->
+      <section class="card shadow-sm">
+        <div class="card-header bg-info">
+          <span class="icon">📊</span>
+          <h2>Resumen de Avance</h2>
+        </div>
+        <div class="card-body center-content">
+          <div class="stats-box">
+            <div class="stat-item">
+              <span class="stat-number" id="total-tasks">0</span>
+              <span class="stat-label">Total</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number text-pending" id="pending-tasks">0</span>
+              <span class="stat-label">Pendientes</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-number text-completed" id="completed-tasks">0</span>
+              <span class="stat-label">Completadas</span>
+            </div>
+          </div>
+
+          <div class="info-card">
+            <h3>📌 Tip para estudiantes:</h3>
+            <p>Las tareas se ordenan automáticamente por la <strong>fecha de entrega más próxima</strong> para que nunca olvides entregar un trabajo a tiempo.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Columna 3: Tabla y Lista de Tareas con Filtros -->
+      <section class="card shadow-sm">
+        <div class="card-header bg-accent">
+          <span class="icon">📑</span>
+          <h2>Lista de Tareas</h2>
+        </div>
+        <div class="card-body">
+          <div class="filter-bar">
+            <label for="status-filter">Filtrar estado:</label>
+            <select id="status-filter" onchange="renderTasks()">
+              <option value="Todas">Todas las tareas</option>
+              <option value="Pendiente">Solo Pendientes</option>
+              <option value="Completada">Solo Completadas</option>
+            </select>
+          </div>
+
+          <div class="table-responsive">
+            <table class="task-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Tarea</th>
+                  <th>Fecha</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="task-list-body">
+                <!-- Se genera dinámicamente con JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Barra Inferior de Accesos Rápidos -->
+    <footer class="bottom-bar">
+      <button class="action-btn btn-add" onclick="focusAddForm()">
+        ➕ <span>Agregar Nueva</span>
+      </button>
+      <button class="action-btn btn-filter" onclick="setFilter('Pendiente')">
+        ⏳ <span>Ver Pendientes</span>
+      </button>
+      <button class="action-btn btn-filter" onclick="setFilter('Completada')">
+        ✅ <span>Ver Completadas</span>
+      </button>
+      <button class="action-btn btn-all" onclick="setFilter('Todas')">
+        🔄 <span>Ver Todas</span>
+      </button>
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
